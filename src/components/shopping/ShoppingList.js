@@ -8,7 +8,7 @@ const ShoppingList = (props) => {
     <ul className={classes.list}>
       {shoppingList.map((item) => (
         <ShoppingItem
-          key={item.id}
+          key={item._id}
           id={item.id}
           text={item.name}
           quantity={item.quantity}

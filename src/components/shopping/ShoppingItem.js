@@ -11,12 +11,12 @@ const ShoppingItem = (props) => {
         </blockquote>
         <figcaption>{props.quantity}</figcaption>
       </figure>
-      <Link className="btn" >
+      <Link className="btn" to="/addItem">
         Edit
       </Link>
-      <Link className="delete-btn btn" >
+      <button className="delete-btn btn" >
         Delete
-      </Link>
+      </button>
     </li>
   );
 };
