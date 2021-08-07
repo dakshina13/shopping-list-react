@@ -9,7 +9,7 @@ const ShoppingList = (props) => {
       {shoppingList.map((item) => (
         <ShoppingItem
           key={item._id}
-          id={item.id}
+          id={item._id}
           text={item.name}
           quantity={item.quantity}
         />

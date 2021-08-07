@@ -1,8 +1,8 @@
-import { Fragment, useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { Fragment, useCallback, useEffect, useState } from "react";
+import { useHistory, useParams } from "react-router-dom";
 
 import LoadingSpinner from "../ui/LoadingSpinner";
-import classes from "./AddItemForm.module.css";
+import classes from "./EditItemForm.module.css";
 
 const AddItemForm = (props) => {
   const [nameInput, setNameInput] = useState("");
@@ -13,13 +13,37 @@ const AddItemForm = (props) => {
   const [httpPost, setHttpPost] = useState("uncomplete");
 
   const histroy = useHistory();
+  const params = useParams();
 
-  async function addItem() {
-    setIsLoading(true);
-    const item = { name: nameInput, quantity: quantityInput };
+  const { id } = params;
+  const getItem = useCallback(async () => {
+    console.log("id " + id);
+    const body = { id: id };
     try {
-      const response = await fetch("http://localhost:5000/add-item", {
+      const response = await fetch("http://localhost:5000/item", {
         method: "POST",
+        body: JSON.stringify(body),
+        headers: { "Content-Type": "application/json" },
+      });
+      if (!response.ok) {
+        setError("Error with database");
+        setIsLoading(false);
+        return;
+      }
+      console.log(response);
+      const data = await response.json();
+      console.log(data);
+      setNameInput(data.name);
+      setQuantityInput(data.quantity);
+    } catch (error) {}
+  }, [id]);
+
+  async function editItem() {
+    setIsLoading(true);
+    const item = { name: nameInput, quantity: quantityInput, id: id };
+    try {
+      const response = await fetch("http://localhost:5000/edit-item", {
+        method: "PUT",
         body: JSON.stringify(item),
         headers: { "Content-Type": "application/json" },
       });
@@ -38,10 +62,11 @@ const AddItemForm = (props) => {
   }
 
   useEffect(() => {
+    getItem();
     if (httpPost === "completed") {
       histroy.push("/list");
     }
-  }, [histroy, httpPost]);
+  }, [getItem, httpPost, histroy,setNameInput,setQuantityInput]);
 
   function submitFormHandler(event) {
     event.preventDefault();
@@ -54,7 +79,7 @@ const AddItemForm = (props) => {
 
     console.log("Name Input " + nameInput);
     console.log("Quantity " + quantityInput);
-    addItem();
+    editItem();
   }
   const nameChangeHandler = (event) => {
     setNameInput(event.target.value);
@@ -92,7 +117,7 @@ const AddItemForm = (props) => {
             />
           </div>
           <div className={classes.actions}>
-            <button className="btn">Add Item</button>
+            <button className="btn">Save Item</button>
           </div>
         </form>
       </div>

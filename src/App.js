@@ -6,6 +6,7 @@ import MainNavigation from "./components/MainNavigation/MainNavigation";
 import Shopping from "./pages/Shopping";
 import AddItem from "./pages/AddItem";
 import NoPageFound from "./pages/NoPageFound";
+import EditItem from "./pages/EditItem";
 
 function App() {
   return (
@@ -21,6 +22,9 @@ function App() {
           </Route>
           <Route path="/addItem">
             <AddItem />
+          </Route>
+          <Route path="/edit/:id">
+            <EditItem />
           </Route>
           <Route path="*">
             <NoPageFound />
