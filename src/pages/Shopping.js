@@ -21,15 +21,29 @@ const Shopping = () => {
     }
     setIsLoading(false);
   }, []);
+
   useEffect(() => {
     fetchItems();
   }, [fetchItems]);
 
+  async function deleteItem(itemId) {
+    const body = { id: itemId };
+    try {
+      const response = await fetch("http://localhost:5000/delete-item", {
+        method: "DELETE",
+        body: JSON.stringify(body),
+        headers: { "Content-Type": "application/json" },
+      });
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {}
+    fetchItems();
+  }
+
   return (
     <Fragment>
-
       {error && <p className="centered">{error}</p>}
-      {!isLoading && <ShoppingList list={items} />}
+      {!isLoading && <ShoppingList list={items} onDelete={deleteItem} />}
     </Fragment>
   );
 };

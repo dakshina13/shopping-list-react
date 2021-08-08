@@ -12,6 +12,7 @@ const ShoppingList = (props) => {
           id={item._id}
           text={item.name}
           quantity={item.quantity}
+          onDelete={props.onDelete}
         />
       ))}
     </ul>
