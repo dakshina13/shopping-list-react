@@ -1,46 +1,19 @@
-import { Fragment, useCallback, useEffect, useState } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import { Fragment, useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 
-import LoadingSpinner from "../ui/LoadingSpinner";
 import classes from "./EditItemForm.module.css";
 
-const AddItemForm = (props) => {
+const EditItemForm = (props) => {
   const [nameInput, setNameInput] = useState("");
   const [quantityInput, setQuantityInput] = useState("");
 
-  const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
   const [httpPost, setHttpPost] = useState("uncomplete");
+  const [error, setError] = useState(null);
 
   const histroy = useHistory();
-  const params = useParams();
-
-  const { id } = params;
-  const getItem = useCallback(async () => {
-    console.log("id " + id);
-    const body = { id: id };
-    try {
-      const response = await fetch("http://localhost:5000/item", {
-        method: "POST",
-        body: JSON.stringify(body),
-        headers: { "Content-Type": "application/json" },
-      });
-      if (!response.ok) {
-        setError("Error with database");
-        setIsLoading(false);
-        return;
-      }
-      console.log(response);
-      const data = await response.json();
-      console.log(data);
-      setNameInput(data.name);
-      setQuantityInput(data.quantity);
-    } catch (error) {}
-  }, [id]);
 
   async function editItem() {
-    setIsLoading(true);
-    const item = { name: nameInput, quantity: quantityInput, id: id };
+    const item = { name: nameInput, quantity: quantityInput, id: props.id };
     try {
       const response = await fetch("http://localhost:5000/edit-item", {
         method: "PUT",
@@ -48,8 +21,7 @@ const AddItemForm = (props) => {
         headers: { "Content-Type": "application/json" },
       });
       if (!response.ok) {
-        setError("Error with database");
-        setIsLoading(false);
+        console.log(response);
         return;
       }
       const data = await response.data;
@@ -58,15 +30,15 @@ const AddItemForm = (props) => {
     } catch (error) {
       console.log("Something went wrong!");
     }
-    setIsLoading(false);
   }
 
   useEffect(() => {
-    getItem();
+    setNameInput(props.name);
+    setQuantityInput(props.quantity);
     if (httpPost === "completed") {
       histroy.push("/list");
     }
-  }, [getItem, httpPost, histroy,setNameInput,setQuantityInput]);
+  }, [httpPost, histroy, props]);
 
   function submitFormHandler(event) {
     event.preventDefault();
@@ -91,13 +63,8 @@ const AddItemForm = (props) => {
   return (
     <Fragment>
       <div className={classes.card}>
-        {error && <p className="center-text error">{error}</p>}
         <form className={classes.form} onSubmit={submitFormHandler}>
-          {isLoading && (
-            <div className={classes.loading}>
-              <LoadingSpinner />
-            </div>
-          )}
+          {error && <p className="center-text error">{error}</p>}
           <div className={classes.control}>
             <label htmlFor="name">Name</label>
             <input
@@ -125,4 +92,4 @@ const AddItemForm = (props) => {
   );
 };
 
-export default AddItemForm;
+export default EditItemForm;

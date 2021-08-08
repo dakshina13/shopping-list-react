@@ -2,6 +2,7 @@
   margin: 3rem auto;
   width: 90%;
   max-width: 40rem;
+  position: relative;
 }
 .delete-btn {
   background-color: red;

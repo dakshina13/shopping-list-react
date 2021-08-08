@@ -22,7 +22,8 @@
   margin-bottom: 0.5rem;
 }
 
-.control input {
+.control input,.control select {
+  text-transform: capitalize;
   font: inherit;
   padding: 0.35rem;
   border-radius: 4px;
@@ -33,7 +34,7 @@
   font-size: 1.25rem;
 }
 
-.control input:focus{
+.control input:focus,.control select:focus{
   background-color: #cbf8f8;
   outline-color: teal;
 }

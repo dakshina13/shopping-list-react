@@ -7,16 +7,26 @@ import classes from "./AddItemForm.module.css";
 const AddItemForm = (props) => {
   const [nameInput, setNameInput] = useState("");
   const [quantityInput, setQuantityInput] = useState("");
+  const [categoryInput, setCategoryInput] = useState("");
+  const [categoryNameInput, setCategoryNameInput] = useState("");
+
+  const [showCategoryName, setShowCategoryName] = useState(false);
 
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [httpPost, setHttpPost] = useState("uncomplete");
 
   const histroy = useHistory();
+  const { categories } = props;
 
   async function addItem() {
     setIsLoading(true);
-    const item = { name: nameInput, quantity: quantityInput };
+    const item = {
+      name: nameInput,
+      quantity: quantityInput,
+      category: categoryInput,
+      categoryName: categoryNameInput,
+    };
     try {
       const response = await fetch("http://localhost:5000/add-item", {
         method: "POST",
@@ -43,6 +53,14 @@ const AddItemForm = (props) => {
     }
   }, [histroy, httpPost]);
 
+  useEffect(() => {
+    if (categoryInput === "others") {
+      setShowCategoryName(true);
+    } else {
+      setShowCategoryName(false);
+    }
+  }, [categoryInput]);
+
   function submitFormHandler(event) {
     event.preventDefault();
     setError(null);
@@ -54,6 +72,8 @@ const AddItemForm = (props) => {
 
     console.log("Name Input " + nameInput);
     console.log("Quantity " + quantityInput);
+    console.log("Category " + categoryInput);
+    console.log("Category Name " + categoryNameInput);
     addItem();
   }
   const nameChangeHandler = (event) => {
@@ -61,6 +81,12 @@ const AddItemForm = (props) => {
   };
   const quantityChangeHandler = (event) => {
     setQuantityInput(event.target.value);
+  };
+  const categoryChangeHandler = (event) => {
+    setCategoryInput(event.target.value);
+  };
+  const categoryNameChangeHandler = (event) => {
+    setCategoryNameInput(event.target.value);
   };
 
   return (
@@ -83,13 +109,41 @@ const AddItemForm = (props) => {
             />
           </div>
           <div className={classes.control}>
-            <label htmlFor="number">Quantity</label>
+            <label htmlFor="quantity">Quantity</label>
             <input
-              id="number"
+              id="quantity"
               type="number"
               value={quantityInput}
               onChange={quantityChangeHandler}
             />
+          </div>
+          <div className={classes.control}>
+            <label htmlFor="category">Category</label>
+            <select
+              id="category"
+              onChange={categoryChangeHandler}
+              value={categoryInput}
+            >
+              <option value="">--</option>
+              {categories &&
+                props.categories.map((category) => (
+                  <option value={category._id} key={category._id}>
+                    {category.name}
+                  </option>
+                ))}
+              <option value="others">Others</option>
+            </select>
+            {showCategoryName && (
+              <div className={classes.control}>
+                <label htmlFor="catName">Category Name</label>
+                <input
+                  type="text"
+                  id="catName"
+                  value={categoryNameInput}
+                  onChange={categoryNameChangeHandler}
+                />
+              </div>
+            )}
           </div>
           <div className={classes.actions}>
             <button className="btn">Add Item</button>
