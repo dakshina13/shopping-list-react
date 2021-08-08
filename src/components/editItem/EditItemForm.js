@@ -6,6 +6,12 @@ import classes from "./EditItemForm.module.css";
 const EditItemForm = (props) => {
   const [nameInput, setNameInput] = useState("");
   const [quantityInput, setQuantityInput] = useState("");
+  const [categoryInput, setCategoryInput] = useState("");
+  const [categoryNameInput, setCategoryNameInput] = useState("");
+
+  const [showCategoryName, setShowCategoryName] = useState(false);
+
+  const { categories } = props;
 
   const [httpPost, setHttpPost] = useState("uncomplete");
   const [error, setError] = useState(null);
@@ -13,7 +19,13 @@ const EditItemForm = (props) => {
   const histroy = useHistory();
 
   async function editItem() {
-    const item = { name: nameInput, quantity: quantityInput, id: props.id };
+    const item = {
+      name: nameInput,
+      quantity: quantityInput,
+      id: props.id,
+      category: categoryInput,
+      categoryName: categoryNameInput,
+    };
     try {
       const response = await fetch("http://localhost:5000/edit-item", {
         method: "PUT",
@@ -33,12 +45,27 @@ const EditItemForm = (props) => {
   }
 
   useEffect(() => {
-    setNameInput(props.name);
-    setQuantityInput(props.quantity);
+    console.log("Histroy use effect");
     if (httpPost === "completed") {
       histroy.push("/list");
     }
-  }, [httpPost, histroy, props]);
+  }, [httpPost, histroy]);
+
+  useEffect(() => {
+    console.log("props use effect");
+    setNameInput(props.name);
+    setQuantityInput(props.quantity);
+    setCategoryInput(props.category);
+  }, [props]);
+
+  useEffect(() => {
+    console.log("category use effect");
+    if (categoryInput === "others") {
+      setShowCategoryName(true);
+    } else {
+      setShowCategoryName(false);
+    }
+  }, [categoryInput]);
 
   function submitFormHandler(event) {
     event.preventDefault();
@@ -51,6 +78,8 @@ const EditItemForm = (props) => {
 
     console.log("Name Input " + nameInput);
     console.log("Quantity " + quantityInput);
+    console.log("Category " + categoryInput);
+    console.log("Category Name " + categoryNameInput);
     editItem();
   }
   const nameChangeHandler = (event) => {
@@ -58,6 +87,12 @@ const EditItemForm = (props) => {
   };
   const quantityChangeHandler = (event) => {
     setQuantityInput(event.target.value);
+  };
+  const categoryChangeHandler = (event) => {
+    setCategoryInput(event.target.value);
+  };
+  const categoryNameChangeHandler = (event) => {
+    setCategoryNameInput(event.target.value);
   };
 
   return (
@@ -83,6 +118,34 @@ const EditItemForm = (props) => {
               onChange={quantityChangeHandler}
             />
           </div>
+          <div className={classes.control}>
+            <label htmlFor="category">Category</label>
+            <select
+              id="category"
+              onChange={categoryChangeHandler}
+              value={categoryInput}
+            >
+              <option value="">--</option>
+              {categories &&
+                props.categories.map((category) => (
+                  <option value={category._id} key={category._id}>
+                    {category.name}
+                  </option>
+                ))}
+              <option value="others">Others</option>
+            </select>
+          </div>
+          {showCategoryName && (
+            <div className={classes.control}>
+              <label htmlFor="catName">Category Name</label>
+              <input
+                type="text"
+                id="catName"
+                value={categoryNameInput}
+                onChange={categoryNameChangeHandler}
+              />
+            </div>
+          )}
           <div className={classes.actions}>
             <button className="btn">Save Item</button>
           </div>

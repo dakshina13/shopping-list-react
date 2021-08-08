@@ -19,7 +19,7 @@ const ShoppingItem = (props) => {
       <Link className="btn" to={`/edit/${props.id}`}>
         Edit
       </Link>
-      <button className="delete-btn btn" onClick={deleteItemHandler}>
+      <button className="btn delete-btn" onClick={deleteItemHandler}>
         Delete
       </button>
     </li>

@@ -9,8 +9,22 @@ const EditItem = () => {
   const { id } = params;
 
   const [item, setItem] = useState({});
+  const [category, setCategory] = useState(null);
+
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const getCategory = useCallback(async () => {
+    try {
+      const response = await fetch("http://localhost:5000/categories");
+      const data = await response.json();
+      if (!response.ok) {
+        console.log(data);
+        return;
+      }
+      console.log(data);
+      setCategory(data);
+    } catch (error) {}
+  }, []);
 
   const getItem = useCallback(async () => {
     console.log("id " + id);
@@ -33,10 +47,11 @@ const EditItem = () => {
       setItem(data);
     } catch (error) {}
   }, [id]);
-  
+
   useEffect(() => {
+    getCategory();
     getItem();
-  }, [getItem]);
+  }, [getItem, getCategory]);
 
   return (
     <Fragment>
@@ -47,7 +62,14 @@ const EditItem = () => {
       )}
       {error && <p className="center-text error">{error}</p>}
       {!isLoading && !error && (
-        <EditItemForm name={item.name} quantity={item.quantity} id={item._id} />
+        <EditItemForm
+          name={item.name}
+          quantity={item.quantity}
+          id={item._id}
+          category={item.category}
+          categories={category}
+          categoryName={item.categoryName}
+        />
       )}
     </Fragment>
   );

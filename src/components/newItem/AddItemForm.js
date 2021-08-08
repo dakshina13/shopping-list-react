@@ -133,7 +133,8 @@ const AddItemForm = (props) => {
                 ))}
               <option value="others">Others</option>
             </select>
-            {showCategoryName && (
+          </div>
+          {showCategoryName && (
               <div className={classes.control}>
                 <label htmlFor="catName">Category Name</label>
                 <input
@@ -144,7 +145,6 @@ const AddItemForm = (props) => {
                 />
               </div>
             )}
-          </div>
           <div className={classes.actions}>
             <button className="btn">Add Item</button>
           </div>
