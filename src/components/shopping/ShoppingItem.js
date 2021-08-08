@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import classes from "./ShoppingItem.module.css";
 
 const ShoppingItem = (props) => {
-
   function deleteItemHandler() {
     props.onDelete(props.id);
   }
@@ -11,7 +10,9 @@ const ShoppingItem = (props) => {
     <li className={classes.item}>
       <figure>
         <blockquote>
-          <p>{props.text}</p>
+          <p>
+            {props.text} <span className={classes.categoryName}>({props.category})</span>
+          </p>
         </blockquote>
         <figcaption>{props.quantity}</figcaption>
       </figure>
