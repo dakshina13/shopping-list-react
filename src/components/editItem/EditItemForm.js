@@ -53,9 +53,11 @@ const EditItemForm = (props) => {
 
   useEffect(() => {
     console.log("props use effect");
-    setNameInput(props.name);
-    setQuantityInput(props.quantity);
-    setCategoryInput(props.category);
+    if (props.name) {
+      setNameInput(props.name);
+      setQuantityInput(props.quantity);
+      setCategoryInput(props.category);
+    }
   }, [props]);
 
   useEffect(() => {
