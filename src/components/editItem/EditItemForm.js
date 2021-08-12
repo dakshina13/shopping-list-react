@@ -109,6 +109,7 @@ const EditItemForm = (props) => {
               id="name"
               value={nameInput}
               onChange={nameChangeHandler}
+              required
             />
           </div>
           <div className={classes.control}>
@@ -118,6 +119,7 @@ const EditItemForm = (props) => {
               type="number"
               value={quantityInput}
               onChange={quantityChangeHandler}
+              required
             />
           </div>
           <div className={classes.control}>
@@ -126,6 +128,7 @@ const EditItemForm = (props) => {
               id="category"
               onChange={categoryChangeHandler}
               value={categoryInput}
+              required
             >
               <option value="">--</option>
               {categories &&

@@ -7,6 +7,8 @@ import Shopping from "./pages/Shopping";
 import AddItem from "./pages/AddItem";
 import NoPageFound from "./pages/NoPageFound";
 import EditItem from "./pages/EditItem";
+import LoginPage from "./pages/LoginPage";
+import SignUpPage from "./pages/SignUpPage";
 
 function App() {
   return (
@@ -25,6 +27,12 @@ function App() {
           </Route>
           <Route path="/edit/:id">
             <EditItem />
+          </Route>
+          <Route path="/login">
+            <LoginPage />
+          </Route>
+          <Route path="/signUp">
+            <SignUpPage />
           </Route>
           <Route path="*">
             <NoPageFound />

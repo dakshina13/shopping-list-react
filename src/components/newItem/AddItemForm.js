@@ -106,6 +106,7 @@ const AddItemForm = (props) => {
               id="name"
               value={nameInput}
               onChange={nameChangeHandler}
+              required
             />
           </div>
           <div className={classes.control}>
@@ -115,6 +116,7 @@ const AddItemForm = (props) => {
               type="number"
               value={quantityInput}
               onChange={quantityChangeHandler}
+              required
             />
           </div>
           <div className={classes.control}>
@@ -123,6 +125,7 @@ const AddItemForm = (props) => {
               id="category"
               onChange={categoryChangeHandler}
               value={categoryInput}
+              required
             >
               <option value="">--</option>
               {categories &&
@@ -135,16 +138,16 @@ const AddItemForm = (props) => {
             </select>
           </div>
           {showCategoryName && (
-              <div className={classes.control}>
-                <label htmlFor="catName">Category Name</label>
-                <input
-                  type="text"
-                  id="catName"
-                  value={categoryNameInput}
-                  onChange={categoryNameChangeHandler}
-                />
-              </div>
-            )}
+            <div className={classes.control}>
+              <label htmlFor="catName">Category Name</label>
+              <input
+                type="text"
+                id="catName"
+                value={categoryNameInput}
+                onChange={categoryNameChangeHandler}
+              />
+            </div>
+          )}
           <div className={classes.actions}>
             <button className="btn">Add Item</button>
           </div>

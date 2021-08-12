@@ -35,3 +35,14 @@
 .nav a.active {
   color: #e6fcfc;
 }
+
+.btn {
+  border: none;
+  background: none;
+  color: #88dfdf;
+  font-size: 1.25rem;
+}
+.btn:hover {
+  color: #e6fcfc;
+  cursor: pointer;
+}
