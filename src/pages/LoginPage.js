@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Fragment, useContext, useState } from "react";
+import { useHistory } from "react-router-dom";
 
 import LoginForm from "../components/Login/LoginForm";
 import AuthContext from "../stored/auth-context";
@@ -9,6 +10,8 @@ const LoginPage = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const authCxt = useContext(AuthContext);
+
+  const histroy = useHistory();
 
   const submitRequest = async (email, password) => {
     setIsLoading(true);
@@ -22,11 +25,12 @@ const LoginPage = () => {
         console.log(res);
         console.log(res.data.token);
         authCxt.login(res.data.token);
+        histroy.replace("/list");
       })
       .catch((error) => {
         setIsLoading(false);
         console.log(error.response);
-        if (error.response.data.message) {
+        if (error.response.data && error.response.data.message) {
           setError(error.response.data.message);
         } else {
           setError("Error with Database");

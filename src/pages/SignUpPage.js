@@ -1,10 +1,13 @@
 import SignUpForm from "../components/SignUp/SignUpForm";
 import axios from "axios";
 import { Fragment, useState } from "react";
+import { useHistory } from "react-router-dom";
 
 const SignUpPage = () => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  const histroy=useHistory();
 
   const submitRequest = async (name, email, password) => {
     setIsLoading(true);
@@ -17,6 +20,7 @@ const SignUpPage = () => {
       .then((res) => {
         setIsLoading(false);
         console.log(res);
+        histroy.replace('/list');
       })
       .catch((error) => {
         console.log(error.response);
