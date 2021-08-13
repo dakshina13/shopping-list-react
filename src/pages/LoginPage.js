@@ -23,8 +23,10 @@ const LoginPage = () => {
       .then((res) => {
         setIsLoading(false);
         console.log(res);
-        console.log(res.data.token);
-        authCxt.login(res.data.token);
+        console.log(res.data.expiresIn);
+        const date = new Date(res.data.expiresIn);
+        console.log(date.toISOString());
+        authCxt.login(res.data.token, date.toISOString());
         histroy.replace("/list");
       })
       .catch((error) => {

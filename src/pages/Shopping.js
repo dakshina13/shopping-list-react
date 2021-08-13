@@ -49,6 +49,7 @@ const Shopping = () => {
     <Fragment>
       {error && <p className="centered">{error}</p>}
       {!isLoading && <ShoppingList list={items} onDelete={deleteItem} />}
+      {items.length===0&&<h2 className="centered">Please add an item.</h2>}
     </Fragment>
   );
 };

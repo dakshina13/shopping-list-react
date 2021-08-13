@@ -92,7 +92,7 @@ const SignUpForm = (props) => {
             />
           </div>
           <div className={classes.loginSpan}>
-            <Link to="/signUp">Already have a account?</Link>
+            <Link to="/login">Already have a account?</Link>
           </div>
           <div className={classes.actions}>
             <button className="btn">Register</button>

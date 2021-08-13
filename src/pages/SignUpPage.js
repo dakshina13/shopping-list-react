@@ -1,13 +1,16 @@
 import SignUpForm from "../components/SignUp/SignUpForm";
 import axios from "axios";
-import { Fragment, useState } from "react";
+import { Fragment, useContext, useState } from "react";
 import { useHistory } from "react-router-dom";
+import AuthContext from "../stored/auth-context";
 
 const SignUpPage = () => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const histroy=useHistory();
+  const authCxt = useContext(AuthContext);
+
+  const histroy = useHistory();
 
   const submitRequest = async (name, email, password) => {
     setIsLoading(true);
@@ -20,7 +23,10 @@ const SignUpPage = () => {
       .then((res) => {
         setIsLoading(false);
         console.log(res);
-        histroy.replace('/list');
+        const date = new Date(res.data.expiresIn);
+        console.log(date.toISOString());
+        authCxt.login(res.data.token, date.toISOString());
+        histroy.replace("/list");
       })
       .catch((error) => {
         console.log(error.response);
