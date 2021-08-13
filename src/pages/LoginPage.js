@@ -1,11 +1,14 @@
 import axios from "axios";
-import { Fragment, useState } from "react";
+import { Fragment, useContext, useState } from "react";
 
 import LoginForm from "../components/Login/LoginForm";
+import AuthContext from "../stored/auth-context";
 
 const LoginPage = () => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  const authCxt = useContext(AuthContext);
 
   const submitRequest = async (email, password) => {
     setIsLoading(true);
@@ -17,6 +20,8 @@ const LoginPage = () => {
       .then((res) => {
         setIsLoading(false);
         console.log(res);
+        console.log(res.data.token);
+        authCxt.login(res.data.token);
       })
       .catch((error) => {
         setIsLoading(false);
@@ -31,7 +36,7 @@ const LoginPage = () => {
   return (
     <Fragment>
       {error && <p className="centered error">{error}</p>}
-      <LoginForm submitRequest={submitRequest} loading={isLoading}/>
+      <LoginForm submitRequest={submitRequest} loading={isLoading} />
     </Fragment>
   );
 };
