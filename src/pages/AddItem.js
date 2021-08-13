@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import AddItemForm from "../components/newItem/AddItemForm";
 
@@ -6,15 +7,13 @@ const AddItem = () => {
 
   const getCategory = useCallback(async () => {
     try {
-      const response = await fetch("http://localhost:5000/categories");
-      const data = await response.json();
-      if (!response.ok) {
-        console.log(data);
-        return;
-      }
+      const response = await axios.get("http://localhost:5000/categories");
+      const data = response.data;
       console.log(data);
       setCategory(data);
-    } catch (error) {}
+    } catch (error) {
+      console.log(error.response);
+    }
   }, []);
 
   useEffect(() => {

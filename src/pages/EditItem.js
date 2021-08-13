@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useEffect, useCallback, useState, Fragment } from "react";
 import { useParams } from "react-router-dom";
 
@@ -15,37 +16,30 @@ const EditItem = () => {
   const [isLoading, setIsLoading] = useState(true);
   const getCategory = useCallback(async () => {
     try {
-      const response = await fetch("http://localhost:5000/categories");
-      const data = await response.json();
-      if (!response.ok) {
-        console.log(data);
-        return;
-      }
+      const response = await axios.get("http://localhost:5000/categories");
+      const data = response.data;
       console.log(data);
       setCategory(data);
-    } catch (error) {}
+    } catch (error) {
+      console.log(error.response);
+    }
   }, []);
 
   const getItem = useCallback(async () => {
     console.log("id " + id);
     const body = { id: id };
     try {
-      const response = await fetch("http://localhost:5000/item", {
-        method: "POST",
-        body: JSON.stringify(body),
-        headers: { "Content-Type": "application/json" },
-      });
+      const response = await axios.post("http://localhost:5000/item", body);
       setIsLoading(false);
-      const data = await response.json();
-      if (!response.ok) {
-        console.log(data);
-        setError(data.message);
-        return;
-      }
+      const data = response.data;
       console.log(response);
       console.log(data);
       setItem(data);
-    } catch (error) {}
+    } catch (error) {
+      console.log(error.response);
+      setError("Something went wrong!");
+      // setError(error.response.data.message);
+    }
   }, [id]);
 
   useEffect(() => {

@@ -1,3 +1,4 @@
+import axios from "axios";
 import { Fragment, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 
@@ -27,19 +28,12 @@ const EditItemForm = (props) => {
       categoryName: categoryNameInput,
     };
     try {
-      const response = await fetch("http://localhost:5000/edit-item", {
-        method: "PUT",
-        body: JSON.stringify(item),
-        headers: { "Content-Type": "application/json" },
-      });
-      if (!response.ok) {
-        console.log(response);
-        return;
-      }
-      const data = await response.data;
+      const response = await axios.put("http://localhost:5000/edit-item", item);
+      const data = response.data;
       console.log(data);
       setHttpPost("completed");
     } catch (error) {
+      console.log(error.response);
       console.log("Something went wrong!");
     }
   }

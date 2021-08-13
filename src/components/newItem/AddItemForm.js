@@ -1,5 +1,6 @@
 import { Fragment, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
+import axios from "axios";
 
 import LoadingSpinner from "../ui/LoadingSpinner";
 import classes from "./AddItemForm.module.css";
@@ -28,17 +29,8 @@ const AddItemForm = (props) => {
       categoryName: categoryNameInput,
     };
     try {
-      const response = await fetch("http://localhost:5000/add-item", {
-        method: "POST",
-        body: JSON.stringify(item),
-        headers: { "Content-Type": "application/json" },
-      });
-      if (!response.ok) {
-        setError("Error with database");
-        setIsLoading(false);
-        return;
-      }
-      const data = await response.data;
+      const response = await axios.post("http://localhost:5000/add-item", item);
+      const data = response.data;
       console.log(data);
       setHttpPost("completed");
     } catch (error) {

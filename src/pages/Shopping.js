@@ -1,4 +1,6 @@
+import axios from "axios";
 import { Fragment, useCallback, useEffect, useState } from "react";
+
 import ShoppingList from "../components/shopping/ShoppingList";
 
 const Shopping = () => {
@@ -10,12 +12,9 @@ const Shopping = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch("http://localhost:5000/shopping");
-      if (!response.ok) {
-        throw new Error("Something went wrong!");
-      }
-      const data = await response.json();
-      setItems(data);
+      const response = await axios.get("http://localhost:5000/shopping");
+      console.log(response.data);
+      setItems(response.data);
     } catch (error) {
       setError(error.message);
     }
@@ -29,14 +28,20 @@ const Shopping = () => {
   async function deleteItem(itemId) {
     const body = { id: itemId };
     try {
-      const response = await fetch("http://localhost:5000/delete-item", {
-        method: "DELETE",
-        body: JSON.stringify(body),
-        headers: { "Content-Type": "application/json" },
+      console.log(body);
+
+      //Not while deleting an item we have to pass body as
+      // data:body and can not pass body directly
+      const response = await axios.delete("http://localhost:5000/delete-item", {
+        data: body,
       });
-      const data = await response.json();
+
+      const data = response.data;
       console.log(data);
-    } catch (error) {}
+    } catch (error) {
+      setError("Something went wrong");
+      console.log(error.response);
+    }
     fetchItems();
   }
 

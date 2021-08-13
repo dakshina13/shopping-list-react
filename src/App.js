@@ -1,5 +1,6 @@
 import { Fragment } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
+import axios from "axios";
 
 import "./App.css";
 import MainNavigation from "./components/MainNavigation/MainNavigation";
@@ -11,6 +12,16 @@ import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
 
 function App() {
+  axios.interceptors.request.use(
+    (config) => {
+      const token = localStorage.getItem("token");
+      config.headers.Authorization = `Bearer ${token}`;
+      return config;
+    },
+    (error) => {
+      return Promise.reject(error);
+    }
+  );
   return (
     <Fragment>
       <MainNavigation />
