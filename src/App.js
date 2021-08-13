@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useContext } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import axios from "axios";
 
@@ -6,10 +6,10 @@ import "./App.css";
 import MainNavigation from "./components/MainNavigation/MainNavigation";
 import Shopping from "./pages/Shopping";
 import AddItem from "./pages/AddItem";
-import NoPageFound from "./pages/NoPageFound";
 import EditItem from "./pages/EditItem";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
+import AuthContext from "./stored/auth-context";
 
 function App() {
   axios.interceptors.request.use(
@@ -22,31 +22,46 @@ function App() {
       return Promise.reject(error);
     }
   );
+
+  const authCxt = useContext(AuthContext);
+
   return (
     <Fragment>
       <MainNavigation />
       <main className="main-div">
         <Switch>
           <Route path="/" exact>
-            <Redirect to="/list" />
+            {authCxt.isLoggedIn && <Redirect to="/list" />}
+            {!authCxt.isLoggedIn && <Redirect to="/login" />}
           </Route>
-          <Route path="/list">
-            <Shopping />
-          </Route>
-          <Route path="/addItem">
-            <AddItem />
-          </Route>
-          <Route path="/edit/:id">
-            <EditItem />
-          </Route>
-          <Route path="/login">
-            <LoginPage />
-          </Route>
-          <Route path="/signUp">
-            <SignUpPage />
-          </Route>
+          {authCxt.isLoggedIn && (
+            <Route path="/list">
+              <Shopping />
+            </Route>
+          )}
+          {authCxt.isLoggedIn && (
+            <Route path="/addItem">
+              <AddItem />
+            </Route>
+          )}
+          {authCxt.isLoggedIn && (
+            <Route path="/edit/:id">
+              <EditItem />
+            </Route>
+          )}
+          {!authCxt.isLoggedIn && (
+            <Route path="/login">
+              <LoginPage />
+            </Route>
+          )}
+          {!authCxt.isLoggedIn && (
+            <Route path="/signUp">
+              <SignUpPage />
+            </Route>
+          )}
           <Route path="*">
-            <NoPageFound />
+            {authCxt.isLoggedIn && <Redirect to="/list" />}
+            {!authCxt.isLoggedIn && <Redirect to="/login" />}
           </Route>
         </Switch>
       </main>
