@@ -28,7 +28,7 @@ const EditItemForm = (props) => {
       categoryName: categoryNameInput,
     };
     try {
-      const response = await axios.put("http://localhost:5000/edit-item", item);
+      const response = await axios.put(process.env.REACT_APP_BACKEND_URL+"/edit-item", item);
       const data = response.data;
       console.log(data);
       setHttpPost("completed");

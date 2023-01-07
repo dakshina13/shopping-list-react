@@ -15,7 +15,7 @@ const SignUpPage = () => {
   const submitRequest = async (name, email, password) => {
     setIsLoading(true);
     axios
-      .post("http://localhost:5000/register", {
+      .post(process.env.REACT_APP_BACKEND_URL+"/register", {
         name: name,
         email: email,
         password: password,

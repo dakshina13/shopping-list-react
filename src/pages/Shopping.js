@@ -12,7 +12,7 @@ const Shopping = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await axios.get("http://localhost:5000/shopping");
+      const response = await axios.get(process.env.REACT_APP_BACKEND_URL+"/shopping");
       console.log(response.data);
       setItems(response.data);
     } catch (error) {
@@ -32,7 +32,7 @@ const Shopping = () => {
 
       //Not while deleting an item we have to pass body as
       // data:body and can not pass body directly
-      const response = await axios.delete("http://localhost:5000/delete-item", {
+      const response = await axios.delete(process.env.REACT_APP_BACKEND_URL+"/delete-item", {
         data: body,
       });
 

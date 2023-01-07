@@ -16,7 +16,7 @@ const LoginPage = () => {
   const submitRequest = async (email, password) => {
     setIsLoading(true);
     axios
-      .post("http://localhost:5000/login", {
+      .post(process.env.REACT_APP_BACKEND_URL+"/login", {
         email: email,
         password: password,
       })

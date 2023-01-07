@@ -29,7 +29,7 @@ const AddItemForm = (props) => {
       categoryName: categoryNameInput,
     };
     try {
-      const response = await axios.post("http://localhost:5000/add-item", item);
+      const response = await axios.post(process.env.REACT_APP_BACKEND_URL+"/add-item", item);
       const data = response.data;
       console.log(data);
       setHttpPost("completed");

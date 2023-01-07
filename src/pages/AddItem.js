@@ -7,7 +7,7 @@ const AddItem = () => {
 
   const getCategory = useCallback(async () => {
     try {
-      const response = await axios.get("http://localhost:5000/categories");
+      const response = await axios.get(process.env.REACT_APP_BACKEND_URL+"/categories");
       const data = response.data;
       console.log(data);
       setCategory(data);

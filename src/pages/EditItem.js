@@ -16,7 +16,7 @@ const EditItem = () => {
   const [isLoading, setIsLoading] = useState(true);
   const getCategory = useCallback(async () => {
     try {
-      const response = await axios.get("http://localhost:5000/categories");
+      const response = await axios.get(process.env.REACT_APP_BACKEND_URL+"/categories");
       const data = response.data;
       console.log(data);
       setCategory(data);
@@ -29,7 +29,7 @@ const EditItem = () => {
     console.log("id " + id);
     const body = { id: id };
     try {
-      const response = await axios.post("http://localhost:5000/item", body);
+      const response = await axios.post(process.env.REACT_APP_BACKEND_URL+"/item", body);
       setIsLoading(false);
       const data = response.data;
       console.log(response);
