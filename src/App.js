@@ -14,6 +14,9 @@ import AuthContext from "./stored/auth-context";
 function App() {
   axios.interceptors.request.use(
     (config) => {
+      config.headers["Access-Control-Allow-Origin"] = "*";
+      config.headers["Access-Control-Allow-Headers"] =
+        "Origin, X-Requested-With, Content-Type, Accept";
       const token = localStorage.getItem("token");
       config.headers.Authorization = `Bearer ${token}`;
       return config;
